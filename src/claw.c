@@ -92,50 +92,10 @@ int claw(const char *filepath, const struct stat *info,
                 const int typeflag, struct FTW *pathinfo)
 {
 
-    if (typeflag == FTW_SL) {
-        char   *target;
-        size_t  maxlen = 1023;
-        ssize_t len;
 
-        while (1) {
-
-            target = malloc(maxlen + 1);
-            if (target == NULL)
-                return ENOMEM;
-
-            len = readlink(filepath, target, maxlen);
-            if (len == (ssize_t)-1) {
-                const int saved_errno = errno;
-                free(target);
-                return saved_errno;
-            }
-            if (len >= (ssize_t)maxlen) {
-                free(target);
-                maxlen += 1024;
-                continue;
-            }
-
-            target[len] = '\0';
-            break;
-        }
-
-        printf(" %s -> %s\n", filepath, target);
-        free(target);
-
-    } else
-    if (typeflag == FTW_SLN)
-        printf(" %s (dangling symlink)\n", filepath);
-    else
-    if (typeflag == FTW_F)
+    if (typeflag == FTW_F) {
         printf(" %s\n", filepath);
-    else
-    if (typeflag == FTW_D || typeflag == FTW_DP)
-        printf(" %s/\n", filepath);
-    else
-    if (typeflag == FTW_DNR)
-        printf(" %s/ (unreadable)\n", filepath);
-    else
-        printf(" %s (unknown)\n", filepath);
+    }
 
     return 0;
 }
