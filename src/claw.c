@@ -13,12 +13,14 @@
 #define USE_FDS 15
 #endif
 
+static char *const EXTENSION
+static char *const CURRENT_WORKING_DIRECTORY
+
 
 int claw(const char *filepath, const struct stat *info,
-                const int typeflag, struct FTW *pathinfo)
-{
+                const int typeflag, struct FTW *pathinfo) {
 
-    if (typeflag == FTW_F) {
+    if (typeflag == FTW_F) and (strstr(filepath, EXTENSION)) {
         printf(" %s\n", filepath);
         bring(filepath);
     }
@@ -26,28 +28,24 @@ int claw(const char *filepath, const struct stat *info,
     return 0;
 }
 
-int bring(const char *filepath)
-{
+int bring(const char *filepath) {
     source = fopen(filepath, "r");
 
-    if( source == NULL )
-    {
+    if( source == NULL ){
       exit(EXIT_FAILURE);
     }
 
-    target = fopen(target_file, "w");
+    // Concatenate strings
+    target_path = strcat(CURRENT_WORKING_DIRECTORY, filepath);
+    target = fopen(target_path, "w");
 
-    if( target == NULL )
-    {
+    if( target == NULL ) {
       fclose(source);
-      printf("Press any key to exit...\n");
       exit(EXIT_FAILURE);
     }
 
     while( ( ch = fgetc(source) ) != EOF )
         fputc(ch, target);
- 
-    printf("File copied successfully.\n");
  
     fclose(source);
     fclose(target);
@@ -55,19 +53,12 @@ int bring(const char *filepath)
     return 0;
 }
 
-int use_claw(const char *const dirpath, const char *const extension)
-{
+int use_claw(const char *const dirpath) {
     int result;
 
     /* If it's a bad path */
     if (dirpath == NULL || *dirpath == '\0')
         return errno = EINVAL;
-
-    /* A file extension should be less than 10
-     * characters. Should be lower case and only
-     * contain text
-    */
-
 
     result = nftw(dirpath, claw, USE_FDS, FTW_PHYS);
     if (result >= 0)
@@ -76,8 +67,7 @@ int use_claw(const char *const dirpath, const char *const extension)
     return errno;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int arg;
 
     if (argc != 3) {
@@ -87,7 +77,17 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     } 
 
-    if (use_claw(argv[1], argv[2])) {
+    if strlen(argv[2]) > 10) {
+        fprintf("The file extension you supplied is greater than 10 characters.");
+        return EXIT_FAILURE;
+    } else {
+        EXTENSION = argv[2];
+    }
+
+    // Get the current working directory
+
+
+    if (use_claw(argv[1])) {
         fprintf(stderr, "%s.\n", strerror(errno));
         return EXIT_FAILURE;
     }
