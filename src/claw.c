@@ -22,13 +22,13 @@ int claw(const char *filepath, const struct stat *info,
 
     if (typeflag == FTW_F) and (strstr(filepath, EXTENSION)) {
         printf(" %s\n", filepath);
-        bring(filepath);
+        _claw(filepath);
     }
 
     return 0;
 }
 
-int bring(const char *filepath) {
+int _claw(const char *filepath) {
     source = fopen(filepath, "r");
 
     if( source == NULL ){
@@ -84,8 +84,14 @@ int main(int argc, char *argv[]) {
         EXTENSION = argv[2];
     }
 
-    // Get the current working directory
 
+    CURRENT_WORKING_DIRECTORY = getcwd(0, 0);
+    if (!CURRENT_WORKING_DIRECTORY) {
+        fprintf (stderr, "getcwd failed: %s\n", strerror (errno));
+    } else {
+        printf ("%s\n", CURRENT_WORKING_DIRECTORY);
+        free (CURRENT_WORKING_DIRECTORY);
+    }
 
     if (use_claw(argv[1])) {
         fprintf(stderr, "%s.\n", strerror(errno));
