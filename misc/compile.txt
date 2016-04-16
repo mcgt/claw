@@ -1,0 +1,8 @@
+  679  gcc -h
+  680  gcc --h
+  681  gcc --version
+  682  gcc copy.c -o copy
+  698  gcc ../claw/copy/copy.c -o copy
+  918  gcc ../claw/copy/traverse.c -o traverse
+  942  cc -g ~/claw/copy/traverse.c 
+
