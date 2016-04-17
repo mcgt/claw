@@ -30,7 +30,8 @@ int claw(const char *filepath, const struct stat *info, const int typeflag, stru
 int _claw(const char *filepath) {
 
 
-    char ch, target_path[strlen(strcat(CURRENT_WORKING_DIRECTORY, filepath))];
+    char ch;
+    char *target_path;//[strlen(strcat(CURRENT_WORKING_DIRECTORY, filepath))];
     FILE *source, *target;    
     source = fopen(filepath, "r");
 
