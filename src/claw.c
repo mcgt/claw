@@ -31,7 +31,7 @@ int _claw(const char *filepath) {
 
 
     char ch;
-    char *target_path;//[strlen(strcat(CURRENT_WORKING_DIRECTORY, filepath))];
+    char *target_path;
     FILE *source, *target;    
     source = fopen(filepath, "r");
 
@@ -76,9 +76,9 @@ int main(int argc, char *argv[]) {
     int arg;
 
     if (argc != 3) {
-        fprintf("claw takes two arguments... <directory> <file_extension>\n");
-        fprintf("e.g. claw /root/ log");
-        fprintf("     This will get all .log files under the root directory. Careful!")
+        printf("claw takes two arguments... <directory> <file_extension>");
+        printf("e.g. claw /root/ log");
+        printf("     This will get all .log files under the root directory. Careful!")
         return EXIT_FAILURE;
     } 
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 
     CURRENT_WORKING_DIRECTORY = getcwd(0, 0);
     if (!CURRENT_WORKING_DIRECTORY) {
-        fprintf (stderr, "getcwd failed: %s\n", strerror (errno));
+        fprintf(stderr, "getcwd failed: %s\n", strerror (errno));
     } else {
         printf ("%s\n", CURRENT_WORKING_DIRECTORY);
         free (CURRENT_WORKING_DIRECTORY);
