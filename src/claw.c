@@ -13,14 +13,13 @@
 #define USE_FDS 15
 #endif
 
-static char *const EXTENSION
-static char *const CURRENT_WORKING_DIRECTORY
+static char *const EXTENSION;
+static char *const CURRENT_WORKING_DIRECTORY;
 
 
-int claw(const char *filepath, const struct stat *info,
-                const int typeflag, struct FTW *pathinfo) {
+int claw(const char *filepath, const struct stat *info, const int typeflag, struct FTW *pathinfo) {
 
-    if (typeflag == FTW_F) and (strstr(filepath, EXTENSION)) {
+    if (typeflag == FTW_F && strstr(filepath, EXTENSION)) {
         printf(" %s\n", filepath);
         _claw(filepath);
     }
