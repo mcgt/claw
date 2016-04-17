@@ -29,7 +29,12 @@ int claw(const char *filepath, const struct stat *info,
 }
 
 int _claw(const char *filepath) {
+
+
+    char ch, target_path[];
+    FILE *source, *target;    
     source = fopen(filepath, "r");
+
 
     if( source == NULL ){
       exit(EXIT_FAILURE);
